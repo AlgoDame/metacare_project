@@ -1,27 +1,22 @@
 import { Request, Response } from "express";
+import { BaseService } from "../baseService";
 import { CommentService } from "./comment_service";
 
-export class CommentHandler {
+export class CommentHandler extends BaseService {
     public async process(req: Request, res: Response) {
         try {
             let failedValidation = CommentService.validateComment(req);
 
-            if (failedValidation) {
-                return res.status(400).json({
-                    status: "Error",
-                    data: failedValidation
-                });
-            }
+            if (failedValidation) return this.sendError(req, res, 400, failedValidation);
 
             let comments = CommentService.processComments(req);
 
-            return res.status(200).json({
-                status: "Success",
-                data: comments
-            });
+            return this.sendResponse(req, res, 200, comments);
             
+
         } catch (error) {
             console.error(`Error occurred in commentHandler::: ${error}`);
+            return this.sendError(req, res, 500, error);
         }
     }
 }
