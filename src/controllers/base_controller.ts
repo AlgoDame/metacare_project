@@ -1,7 +1,8 @@
 import { Request, Response, Router } from "express";
 import { CommentHandler } from "../services/comments/comment_handler";
+import { MovieHandler } from "../services/movies/movies_handler";
 
-export class CommentController {
+export class BaseController {
     /**
      * Create the routes.
      *
@@ -10,6 +11,7 @@ export class CommentController {
     public loadRoutes(prefix: string, router: Router) {
         this.addComments(prefix, router);
         this.listComments(prefix, router);
+        this.fetchMovies(prefix, router);
     }
 
     private addComments(prefix: string, router: Router): any {
@@ -21,7 +23,7 @@ export class CommentController {
         );
     }
 
-    private listComments(prefix: string, router: Router){
+    private listComments(prefix: string, router: Router) {
         router.get(
             prefix + "/comments",
             async (req: Request, res: Response) => {
@@ -30,5 +32,11 @@ export class CommentController {
         );
     }
 
-    
+    private fetchMovies(prefix: string, router: Router) {
+        router.get(prefix + "/list", async (req:Request, res:Response) => {
+            await new MovieHandler().fetchMovies(req, res);
+        })
+    }
+
+
 }

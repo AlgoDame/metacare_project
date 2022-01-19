@@ -1,7 +1,7 @@
 import express from "express";
-import { CommentController } from "../controllers/comment_controller";
+import { BaseController } from "../controllers/base_controller";
 
 const router = express.Router();
-new CommentController().loadRoutes("/movies", router);
+new BaseController().loadRoutes("/movies", router);
 
 export { router as apiRouter };

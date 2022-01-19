@@ -10,7 +10,7 @@ export class MoviesService {
             url: "https://swapi.dev/api/films"
         })
 
-        let results: Record<string, any>[] = serverResponse.data;
+        let results: Record<string, any>[] = serverResponse.data.results;
 
         let movies = results.map((item) => {
             let obj = {
@@ -28,38 +28,42 @@ export class MoviesService {
     private async fetchCommentCount() {
         let movies = await this.fetchSwapiMovies();
 
-        let moviesWithCount = movies.map(async (item) => {
+        let moviesWithCount:any[] = [];
+
+        for(const movie of movies){
             let count = await prisma.commentModel.count({
                 where: {
-                    episode_id: item.episode_id
+                    episode_id: movie.episode_id
                 }
             })
 
-            let obj = {
-                title: item.title,
-                release_date: item.release_date,
-                episode_id: item.episode_id,
-                opening_crawl: item.opening_crawl,
+            let object = {
+                title: movie.title,
+                release_date: movie.release_date,
+                episode_id: movie.episode_id,
+                opening_crawl: movie.opening_crawl,
                 comment_count: count
             }
 
-            return obj;
-        })
+            moviesWithCount.push(object);
+        }
 
-        return moviesWithCount;
+        return  moviesWithCount;
 
 
     }
 
-    // public async sendMovieList(){
-    //     let movieList = await this.fetchCommentCount();
+    public async sendMovieList(){
+        let movieList = await this.fetchCommentCount();
 
-    //     let ordered = movieList.sort((a, b) => {
-    //         let dateA: any = new Date(a.release_date);
-    //         let dateB: any = new Date(b.release_date);
+        let orderedList = movieList.sort((a, b) => {
+            let dateA: any = new Date(a.release_date);
+            let dateB: any = new Date(b.release_date);
         
-    //         return dateA - dateB;
-    //     });
-    // }
+            return dateA - dateB;
+        });
+
+        return orderedList;
+    }
 
 }
