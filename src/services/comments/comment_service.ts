@@ -33,7 +33,7 @@ export class CommentService {
         let requester = req.ip;
 
         let createdComment = await this.addCommentToDB(comment, episodeId, requester);
-        console.log("created::: ", createdComment);
+        console.log("created comment::: ", createdComment);
         return createdComment;
 
     }
@@ -48,5 +48,18 @@ export class CommentService {
         })
 
         return createdComment
+    }
+
+    public static async fetchComments(){
+        const commentList = await prisma.commentModel.findMany();
+
+        let reverseOrderedCommentList = commentList.sort((a, b) => {
+            let dateA: any = new Date(a.createdAt);
+            let dateB: any = new Date(b.createdAt);
+        
+            return dateB - dateA;
+        });
+        
+        return reverseOrderedCommentList;
     }
 }
