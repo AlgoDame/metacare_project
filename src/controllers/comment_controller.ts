@@ -13,7 +13,7 @@ export class CommentController {
 
     private addComments(prefix: string, router: Router): any {
         router.post(
-            prefix + "/comment",
+            prefix + "/:episode_id/comment",
             async (req: Request, res: Response) => {
                 new CommentHandler().process(req, res);
             }

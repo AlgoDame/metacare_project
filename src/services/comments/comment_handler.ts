@@ -6,11 +6,12 @@ export class CommentHandler extends BaseService {
     public async process(req: Request, res: Response) {
         try {
             let failedValidation = CommentService.validateComment(req);
-
             if (failedValidation) return this.sendError(req, res, 400, failedValidation);
 
-            let comments = CommentService.processComments(req);
+            let inEpisodeId = CommentService.validateEpisodeId(req);
+            if(inEpisodeId) return this.sendError(req, res, 400, inEpisodeId);
 
+            let comments = await CommentService.processComments(req);
             return this.sendResponse(req, res, 200, comments);
             
 
