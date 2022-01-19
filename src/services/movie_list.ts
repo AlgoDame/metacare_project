@@ -514,8 +514,8 @@ let refined = data.results.map((item) => {
     let obj = {
         title: item.title,
         release_date: item.release_date,
-        episodeId: item.episode_id
-        //opening_crawl: item.opening_crawl
+        episodeId: item.episode_id,
+        opening_crawl: item.opening_crawl
     };
     return obj;
 });
