@@ -19,11 +19,11 @@ export class CommentService {
         let isValid = validEpisodeIdList.includes(episodeId);
 
         if (isValid) {
-            return null
+            return null;
         } else {
             return {
                 message: `Invalid episode id. See list for valid episode ids: ${validEpisodeIdList}`
-            }
+            };
         }
     }
 
@@ -32,34 +32,41 @@ export class CommentService {
         let episodeId = +req.params.episode_id;
         let requester = req.ip;
 
-        let createdComment = await this.addCommentToDB(comment, episodeId, requester);
+        let createdComment = await this.addCommentToDB(
+            comment,
+            episodeId,
+            requester
+        );
         console.log("created comment::: ", createdComment);
         return createdComment;
-
     }
 
-    private static async addCommentToDB(comment: string, episodeId: number, ipAddress: string) {
+    private static async addCommentToDB(
+        comment: string,
+        episodeId: number,
+        ipAddress: string
+    ) {
         const createdComment = await prisma.commentModel.create({
             data: {
                 comment: comment,
                 episode_id: episodeId,
                 author: ipAddress
             }
-        })
+        });
 
-        return createdComment
+        return createdComment;
     }
 
-    public static async fetchComments(){
+    public static async fetchComments() {
         const commentList = await prisma.commentModel.findMany();
 
         let reverseOrderedCommentList = commentList.sort((a, b) => {
             let dateA: any = new Date(a.createdAt);
             let dateB: any = new Date(b.createdAt);
-        
+
             return dateB - dateA;
         });
-        
+
         return reverseOrderedCommentList;
     }
 }

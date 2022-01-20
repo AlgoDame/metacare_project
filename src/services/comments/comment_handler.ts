@@ -6,15 +6,14 @@ export class CommentHandler extends BaseService {
     public async create(req: Request, res: Response) {
         try {
             let failedValidation = CommentService.validateComment(req);
-            if (failedValidation) return this.sendError(req, res, 400, failedValidation);
+            if (failedValidation)
+                return this.sendError(req, res, 400, failedValidation);
 
             let inEpisodeId = CommentService.validateEpisodeId(req);
             if (inEpisodeId) return this.sendError(req, res, 400, inEpisodeId);
 
             let comments = await CommentService.processComments(req);
             return this.sendResponse(req, res, 201, comments);
-
-
         } catch (error) {
             console.error(`Error occurred in commentHandler::: ${error}`);
             return this.sendError(req, res, 500, error);

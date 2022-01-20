@@ -8,7 +8,7 @@ export class MoviesService {
         let serverResponse = await axios({
             method: "GET",
             url: "https://swapi.dev/api/films"
-        })
+        });
 
         let results: Record<string, any>[] = serverResponse.data.results;
 
@@ -28,14 +28,14 @@ export class MoviesService {
     private async fetchCommentCount() {
         let movies = await this.fetchSwapiMovies();
 
-        let moviesWithCount:any[] = [];
+        let moviesWithCount: any[] = [];
 
-        for(const movie of movies){
+        for (const movie of movies) {
             let count = await prisma.commentModel.count({
                 where: {
                     episode_id: movie.episode_id
                 }
-            })
+            });
 
             let object = {
                 title: movie.title,
@@ -43,27 +43,24 @@ export class MoviesService {
                 episode_id: movie.episode_id,
                 opening_crawl: movie.opening_crawl,
                 comment_count: count
-            }
+            };
 
             moviesWithCount.push(object);
         }
 
-        return  moviesWithCount;
-
-
+        return moviesWithCount;
     }
 
-    public async sendMovieList(){
+    public async sendMovieList() {
         let movieList = await this.fetchCommentCount();
 
         let orderedList = movieList.sort((a, b) => {
             let dateA: any = new Date(a.release_date);
             let dateB: any = new Date(b.release_date);
-        
+
             return dateA - dateB;
         });
 
         return orderedList;
     }
-
 }

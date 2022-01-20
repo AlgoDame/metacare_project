@@ -5,4 +5,3 @@ export const characterValidator = Joi.object().keys({
     order: Joi.string().valid("asc", "desc").required(),
     gender: Joi.string().valid("male", "female", "n/a").required()
 });
-

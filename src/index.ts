@@ -6,7 +6,7 @@ const app = express();
 const PORT = process.env.PORT || 9000;
 
 app.use(express.json());
-app.use(express.urlencoded({extended: true}))
+app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"));
 app.use("/v1/api", apiRouter);
 

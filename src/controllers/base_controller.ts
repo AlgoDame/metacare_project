@@ -36,13 +36,15 @@ export class BaseController {
     private fetchMovies(prefix: string, router: Router) {
         router.get(prefix + "/list", async (req: Request, res: Response) => {
             await new MovieHandler().fetchMovies(req, res);
-        })
+        });
     }
 
     private fetchCharacters(prefix: string, router: Router) {
-        router.get(prefix + "/characters", async (req: Request, res: Response) => {
-            await new CharacterHandler().fetch(req, res);
-        })
+        router.get(
+            prefix + "/characters",
+            async (req: Request, res: Response) => {
+                await new CharacterHandler().fetch(req, res);
+            }
+        );
     }
-
 }

@@ -15,23 +15,20 @@ export class CharacterService {
 
         if (genderList.length) {
             let sortedList = this.sortCharacters(genderList, sort, order)!;
-            let responsePayload = this.prepareMetaData(sortedList)
+            let responsePayload = this.prepareMetaData(sortedList);
             return responsePayload;
         }
 
         let responsePayload = this.prepareMetaData(genderList);
         return responsePayload;
-
     }
 
-    
     public static validateQuery(req: Request) {
         const validation = characterValidator.validate(req.query);
         const { value, error } = validation;
         let failedValidation;
         error ? (failedValidation = error.message) : (failedValidation = null);
         return failedValidation;
-
     }
 
     public static extractQueryParams(req: Request) {
@@ -41,37 +38,42 @@ export class CharacterService {
             order,
             gender,
             sort
-        }
+        };
     }
 
-    private static sortCharacters(characterList: Record<string, any>[], sortParam: any, order: any) {
+    private static sortCharacters(
+        characterList: Record<string, any>[],
+        sortParam: any,
+        order: any
+    ) {
         if (order == "asc") {
             let ascOrderedList = characterList.sort((a, b) => {
-                return a[sortParam].localeCompare(b[sortParam])
+                return a[sortParam].localeCompare(b[sortParam]);
             });
             return ascOrderedList;
         }
 
         if (order == "desc") {
             let descOrderedList = characterList.sort((a, b) => {
-                return b[sortParam].localeCompare(b[sortParam])
+                return b[sortParam].localeCompare(b[sortParam]);
             });
             return descOrderedList;
         }
-
     }
 
-    private static filterByGender(characterList: Record<string, any>[], gender: any) {
+    private static filterByGender(
+        characterList: Record<string, any>[],
+        gender: any
+    ) {
         let genderList: Record<string, any>[] = [];
 
-        characterList.forEach(character => {
+        characterList.forEach((character) => {
             if (character.gender == gender.toLowerCase()) {
-                genderList.push(character)
+                genderList.push(character);
             }
-        })
+        });
 
-        return genderList
-
+        return genderList;
     }
 
     private static prepareMetaData(characterList: any[]) {
@@ -86,43 +88,39 @@ export class CharacterService {
                     }
                 },
                 characters: []
-            }
+            };
             return resposnePayload;
         }
 
         let totalHeight = this.sumHeight(characterList);
 
         let resposnePayload = {
-            metadata : {
+            metadata: {
                 count: characterList.length,
                 totalHeight,
                 characters: characterList
             }
-        }
+        };
 
         return resposnePayload;
-
     }
 
     private static sumHeight(characterList: Record<string, any>[]) {
         let sum = 0;
-        characterList.forEach(item => {
+        characterList.forEach((item) => {
             let height = +item.height;
-            sum += height
-        })
+            sum += height;
+        });
 
-        let heightInFeet = (sum/30.48).toFixed(2);
-        let heighInInches = (sum/2.54).toFixed(2);
+        let heightInFeet = (sum / 30.48).toFixed(2);
+        let heighInInches = (sum / 2.54).toFixed(2);
 
         let totalHeight = {
             cm: sum,
             feet: heightInFeet,
             inches: heighInInches
-        }
+        };
 
-        return totalHeight
-
+        return totalHeight;
     }
-
-
 }
