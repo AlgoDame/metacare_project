@@ -4,11 +4,9 @@
   "description": "metacare_project",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "format": "prettier --write 'src/**'",
     "dev": "ts-node src/index",
-    "start": "node dist/index.js",
-    "build": "tsc -p ."
+    "deploy": "npx prisma migrate deploy"
   },
   "repository": {
     "type": "git",
