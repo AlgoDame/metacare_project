@@ -6,6 +6,7 @@
   "scripts": {
     "format": "prettier --write 'src/**'",
     "dev": "ts-node src/index",
+    "start": "node dist/index",
     "deploy": "npx prisma migrate deploy"
   },
   "repository": {
