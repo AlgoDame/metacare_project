@@ -12,4 +12,4 @@ COPY . .
 EXPOSE 9000
 
 RUN npx prisma generate
-CMD ["npm" "run" "dev"] 
+CMD ["scripts/startup.sh"] 
