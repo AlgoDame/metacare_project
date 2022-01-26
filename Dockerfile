@@ -14,4 +14,6 @@ EXPOSE 9000
 
 RUN npx prisma generate
 
-CMD ["scripts/startup.sh"] 
+#RUN ./startup.sh
+RUN chmod +x ./startup.sh
+CMD ["/bin/sh", "-c", "./startup.sh"]
